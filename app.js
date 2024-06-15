@@ -21,11 +21,17 @@ app.get('/', (req, res) => {
 })
 
 app.get('/search', (req, res) => {
-  const keyword = req.query.keyword ? req.query.keyword.toLowerCase() : '';
-  const filteredRestaurantsData = restaurantsData.filter(data => {
+  let noData = true
+  const keyword = req.query.keyword.toLowerCase();  // 確保關鍵字轉為小寫
+  let filteredRestaurantsData = restaurantsData.filter(data => {
     return data.name.toLowerCase().includes(keyword) || data.category.toLowerCase().includes(keyword);
   });
-  res.render('index', { title, restaurantsData: filteredRestaurantsData, keyword });
+
+  if (filteredRestaurantsData.length > 0) {
+    noData = false
+  }
+
+  res.render('index', { title, restaurantsData: filteredRestaurantsData, keyword, noData });
 });
 
 
